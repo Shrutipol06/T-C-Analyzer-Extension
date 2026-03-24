@@ -58,7 +58,42 @@ const RULES = [
   // IP
   { pattern: /\b(grant|grants|granting)\s+(us|company|we)\s+(a\s+)?(worldwide|perpetual|irrevocable|royalty[- ]free)\b/gi, category: "IP", severity: "High",   impact: 0.85, label: "Broad IP License Grant" },
   { pattern: /\bown(s|ership)?\s+(all\s+)?(content|intellectual\s+property|IP)\s+(you\s+)?(submit|upload|create)\b/gi,    category: "IP", severity: "High",   impact: 0.9,  label: "IP Ownership Transfer" },
-  { pattern: /\blicense\s+to\s+use\s+your\s+content\b/gi,                         category: "IP", severity: "Medium", impact: 0.55, label: "Content License" }
+  { pattern: /\blicense\s+to\s+use\s+your\s+content\b/gi,                         category: "IP", severity: "Medium", impact: 0.55, label: "Content License" },
+
+  // Extended Data Privacy Rules
+  { pattern: /\b(will\s+not|will\s+never|does\s+not|do\s+not|cannot)\s+(be\s+)?(sell|sold|share|shared|disclosed|transfer)\s+.*?(data|information|personal)\b/gi, category: "Data Privacy", severity: "Low", impact: 0.0, label: "No Data Sharing Clause (Safe)" },
+  { pattern: /\b(will\s+not|will\s+never|do\s+not|does\s+not)\s+track.*?(activity|behavior|location|browsing)\b/gi, category: "Data Privacy", severity: "Low", impact: 0.0, label: "No Tracking Clause (Safe)" },
+  { pattern: /\bnever.*?(share|sell|disclose).*?(personal|customer)\s+data\b/gi, category: "Data Privacy", severity: "Low", impact: 0.0, label: "Never Share Data (Safe)" },
+  { pattern: /\bdata.*?(will\s+not|is\s+not)\s+(used|shared|sold)\b/gi, category: "Data Privacy", severity: "Low", impact: 0.0, label: "Data Not Used/Shared (Safe)" },
+  { pattern: /\bbrowsing\s+behavior.*?across\s+.*(site|website|page)\b/gi, category: "Data Privacy", severity: "High", impact: 0.8, label: "Cross-Site Tracking" },
+  { pattern: /\blocation\s+data.*?share.*?(partner|marketing|affiliate)\b/gi, category: "Data Privacy", severity: "High", impact: 0.85, label: "Location Data Sharing" },
+  { pattern: /\baffiliate(s)?\s+(marketing|partner|program)\b/gi, category: "Data Privacy", severity: "High", impact: 0.75, label: "Affiliate Data Sharing" },
+
+  // Extended Financial/Refund Rules
+  { pattern: /\b(all|every)\s+purchase.*?non[- ]refundable\b/gi, category: "Financial", severity: "High", impact: 0.9, label: "All Purchases Non-Refundable" },
+  { pattern: /\brefund.*?(available|allowed).*?(\d+)\s+(days?|weeks?|months?)\b/gi, category: "Financial", severity: "Low", impact: 0.2, label: "Refund Window Available (Safe)" },
+  { pattern: /\blate\s+payment.*?(\d+)%.*?(interest|charge|fee)\b/gi, category: "Financial", severity: "High", impact: 0.85, label: "Late Payment Penalty" },
+  { pattern: /\brestocking\s+fee\b/gi, category: "Financial", severity: "High", impact: 0.75, label: "Restocking Fee" },
+  { pattern: /\bdo\s+not\s+charge\s+(hidden|undisclosed|surprise)\s+(fee|charge|cost)\b/gi, category: "Financial", severity: "Low", impact: 0.0, label: "No Hidden Fees (Safe)" },
+  { pattern: /\bno\s+(additional|extra|hidden).*?(fee|charge|cost)\b/gi, category: "Financial", severity: "Low", impact: 0.0, label: "No Hidden Charges (Safe)" },
+
+  // Extended Cancellation Rules
+  { pattern: /\b(cannot|can't|unable\s+to|no\s+ability)\s+cancel.*?subscription\b/gi, category: "Financial", severity: "High", impact: 0.95, label: "No Cancellation Option" },
+  { pattern: /\bcancel.*?(anytime|at\s+any\s+time).*?(without|no)\s+(penalty|fee)\b/gi, category: "Financial", severity: "Low", impact: 0.0, label: "Cancel Anytime No Penalty (Safe)" },
+  { pattern: /\bto\s+cancel.*?(\d+)\s+(days?)\s+without\s+(penalty|fee)\b/gi, category: "Financial", severity: "Low", impact: 0.1, label: "Grace Period For Cancellation (Safe)" },
+  { pattern: /\nearly\s+cancell?ation.*?\$?\d+\s+(fee|penalty)\b/gi, category: "Financial", severity: "High", impact: 0.75, label: "Early Termination Fee" },
+
+  // Extended User Rights Rules
+  { pattern: /\b(reserve\s+the\s+right\s+to)?\s*terminate.*?(account|access|service).*?(without\s+notice|immediately)\b/gi, category: "User Rights", severity: "High", impact: 0.9, label: "Unilateral Account Termination" },
+  { pattern: /\bmodif(y|ied|ication)\s+(terms|agreement).*?(without\s+notification|without\s+notice)\b/gi, category: "User Rights", severity: "High", impact: 0.85, label: "Unilateral Terms Modification" },
+  { pattern: /\barbitration\s+(clause|agreement|agreement).*?waive.*?right.*?sue\b/gi, category: "User Rights", severity: "High", impact: 0.95, label: "Mandatory Arbitration with Legal Waiver" },
+  { pattern: /\b(we|company|us)\s+(reserve\s+)?right.*?access.*?account.*?(any\s+time|for\s+any\s+reason)\b/gi, category: "User Rights", severity: "High", impact: 0.9, label: "Unrestricted Account Access" },
+  { pattern: /\b(assume|accept)\s+(all\s+)?(risk|liability|responsibility).*?(loss|damage|access)\b/gi, category: "User Rights", severity: "High", impact: 0.85, label: "User Assumes All Risk" },
+  { pattern: /\bnot\s+(liable|held\s+liable|responsible).*?damage.*?your\s+service\b/gi, category: "User Rights", severity: "High", impact: 0.85, label: "Liability Disclaimer" },
+
+  // Extended Liability Rules
+  { pattern: /\b(we|company|us)\s+(are\s+)?(responsible|accountable|liable).*?all\s+loss\b/gi, category: "Legal", severity: "Low", impact: 0.0, label: "Company Accepts Liability (Safe)" },
+  { pattern: /\b(cannot|is\s+not)\s+(held\s+)?(liable|responsible)\s+for\s+third[- ]party\b/gi, category: "Legal", severity: "High", impact: 0.8, label: "No Liability For Third-Party Content" }
 ];
 
 // ── Deterministic hash (same text → same hash always) ────────

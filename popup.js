@@ -94,7 +94,6 @@ $('scanBtn').addEventListener('click', async () => {
   
   // Clear old results
   $('sumContent').innerHTML = '<div class="empty-state"><div class="es-icon spin">⟳</div><p class="es-p">Analyzing page...</p></div>';
-  $('userDefinedSummary').style.display = 'none';
   $('scoreBox').style.display = 'none';
   $('clauseSec').style.display = 'none';
   
@@ -227,30 +226,6 @@ function applyResult(result, animate) {
 
   renderPills();
   renderSummary();
-  console.log('[TC Popup] Applying result, user rules detected:', result.userRulesDetected);
-  renderUserRulesSummary(result.userRulesDetected || []);
-}
-
-function renderUserRulesSummary(detected) {
-  const wrap = $('userDefinedSummary');
-  const cont = $('userRuleContent');
-  console.log('[TC Popup] Rendering user rules summary, count:', detected?.length);
-  if (!detected || detected.length === 0) {
-    wrap.style.display = 'none';
-    return;
-  }
-  wrap.style.display = 'block';
-  cont.innerHTML = detected.map(r => `
-    <div class="sum-card sch">
-      <div class="sc-hd">
-        <span class="sc-ico">💡</span>
-        <span class="sc-title">${esc(r.rule)}</span>
-      </div>
-      <div class="sc-body">
-        <em>"${esc(r.text)}"</em>
-      </div>
-    </div>
-  `).join('');
 }
 
 // ── Donut animation ───────────────────────────────────────────
